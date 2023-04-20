@@ -23,10 +23,11 @@
 - User is able to create his task.
 - User is able to mark his task as done.
 - User is able to see all of his current tasks with their status whether they are pending done or in progress.
+- User is able to see done task and when it get done
+- User can detele done task permenantly
 
 
 ## Technologies Used
-
 - Flutter
 - SQLite
 - GetX
