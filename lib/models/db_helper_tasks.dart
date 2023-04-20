@@ -29,7 +29,6 @@ class DBHelper {
     );
   }
 
-// Fetch Operation: Get all task objects from database
   Future<List<Task>> getTasks() async {
     Database? db = await database;
     final List<Map<String, Object?>> rawQueryResult = await db!.rawQuery(

@@ -3,6 +3,7 @@ import 'package:todo_app/models/db_helper_tasks.dart';
 import 'package:todo_app/models/task.dart';
 
 class TaskController {
+
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   DBHelper? dbHelper;
