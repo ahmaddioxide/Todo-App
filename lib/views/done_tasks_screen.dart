@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/models/db_helper_tasks.dart';
+import 'package:todo_app/controllers/database_controller.dart';
 import 'package:todo_app/views/pending_tasks_screen.dart';
 import '../controllers/task_controller.dart';
 
@@ -17,7 +17,7 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
   @override
   void initState() {
     super.initState();
-    taskController.dbHelper = DBHelper();
+    taskController.databaseController = DatabaseController();
     // taskController.tasks = taskController.dbHelper!.getTasks();
   }
 
@@ -193,11 +193,12 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
                                       ],
                                     ),
                                   ),
-                                  key: ValueKey<int>(todoId),
+                                  key: UniqueKey(),
                                   direction: DismissDirection.horizontal,
                                   onDismissed: (direction) {
                                     setState(() {
-                                      taskController.dbHelper!.delete(todoId);
+                                      taskController.databaseController!
+                                          .delete(todoId);
                                       taskController.getDoneTasks();
                                     });
                                   },

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/models/db_helper_tasks.dart';
+import 'package:todo_app/controllers/database_controller.dart';
 import 'package:todo_app/models/task.dart';
 
 class TaskController {
-
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  DBHelper? dbHelper;
+  DatabaseController? databaseController;
   late Future<List<Task>> tasks;
 
-
-
   Future<List<Task>> getPendingTasks() {
-    var pendingTasks = dbHelper!.getTasks();
+    var pendingTasks = databaseController!.getTasks();
     pendingTasks.then((value) {
       value.removeWhere((element) => element.status == 1);
     });
@@ -20,7 +17,7 @@ class TaskController {
   }
 
   Future<List<Task>> getDoneTasks() {
-    var doneTasks = dbHelper!.getTasks();
+    var doneTasks = databaseController!.getTasks();
     doneTasks.then((value) {
       value.removeWhere((element) => element.status == 0);
     });
@@ -28,20 +25,18 @@ class TaskController {
   }
 
   updateTaskStatus(taskId, todoTitle, todoDescription) {
-      var task = Task(
-        id: taskId,
-        title: todoTitle.toString().trim(),
-        description: todoDescription.toString().trim(),
-        date:
-        "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-        time: "${DateTime.now().hour}:${DateTime.now().minute}",
-        status: 1,
-      );
-      dbHelper!.update(task, taskId);
-      tasks = dbHelper!.getTasks();
-
+    var task = Task(
+      id: taskId,
+      title: todoTitle.toString().trim(),
+      description: todoDescription.toString().trim(),
+      date:
+          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+      time: "${DateTime.now().hour}:${DateTime.now().minute}",
+      status: 1,
+    );
+    databaseController!.update(task, taskId);
+    tasks = databaseController!.getTasks();
   }
-
 
   addTask() {
     var task = Task(
@@ -53,14 +48,12 @@ class TaskController {
       status: 0,
     );
 
-    dbHelper!.insert(task);
-    tasks = dbHelper!.getTasks();
+    databaseController!.insert(task);
+    tasks = databaseController!.getTasks();
     titleController.clear();
     descriptionController.clear();
     // print("Task Added Successfully");
   }
-
-
 
   updateTask(taskId) {
     var task = Task(
@@ -73,12 +66,11 @@ class TaskController {
       status: 0,
     );
 
-    dbHelper!.update(task, taskId);
-    tasks = dbHelper!.getTasks();
+    databaseController!.update(task, taskId);
+    tasks = databaseController!.getTasks();
     titleController.clear();
     descriptionController.clear();
     descriptionController.clear();
     // print("Task Updated Successfully");
   }
-
 }

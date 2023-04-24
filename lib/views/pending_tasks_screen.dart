@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/models/db_helper_tasks.dart';
+import 'package:todo_app/controllers/database_controller.dart';
 import 'package:todo_app/views/done_tasks_screen.dart';
 import '../controllers/task_controller.dart';
 
@@ -13,12 +13,15 @@ class PendingTasksScreen extends StatefulWidget {
 
 class _PendingTasksScreenState extends State<PendingTasksScreen> {
   final taskController = TaskController();
+  final newFormKey = GlobalKey<FormState>();
+  final updateFormKey = GlobalKey<FormState>();
+
 
   @override
   void initState() {
     super.initState();
-    taskController.dbHelper = DBHelper();
-    taskController.tasks = taskController.dbHelper!.getTasks();
+    taskController.databaseController = DatabaseController();
+    taskController.tasks = taskController.databaseController!.getTasks();
   }
 
   Future<void> updateTaskInput(context, taskId, title, description) async {
@@ -31,37 +34,50 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
           return AlertDialog(
             title: const Text("Update Task"),
             content: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: taskController.titleController,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Task Title",
-                        labelText: "Task Title",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: taskController.descriptionController,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 1,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: "Enter Task Description",
-                      labelText: "Task Description",
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: Get.height * 0.06,
-                          horizontal: Get.width * 0.03),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
+              child: Form(
+                key: updateFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: taskController.titleController,
+                      decoration: const InputDecoration(
+                          hintText: "Enter Task Title",
+                          labelText: "Task Title",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          )),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Task Title";
+                        }
+                      },
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: taskController.descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: "Enter Task Description",
+                        labelText: "Task Description",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: Get.height * 0.06,
+                            horizontal: Get.width * 0.03),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Task Description";
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             actions: [
@@ -84,8 +100,15 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                   ),
                   child: IconButton(
                       onPressed: () {
-                        taskController.updateTask(taskId);
-                        Get.back();
+                        if (updateFormKey.currentState!.validate()) {
+                          taskController.updateTask(taskId);
+                          Get.back();
+                        } else {
+                          Get.snackbar("Error", "Please Fill All Fields",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
+                        }
                       },
                       icon: const Icon(Icons.add))),
             ],
@@ -103,37 +126,50 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
           return AlertDialog(
             title: const Text("Add New Task"),
             content: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: taskController.titleController,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Task Title",
-                        labelText: "Task Title",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: taskController.descriptionController,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 1,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: "Enter Task Description",
-                      labelText: "Task Description",
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: Get.height * 0.06,
-                          horizontal: Get.width * 0.03),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
+              child: Form(
+                key: newFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: taskController.titleController,
+                      decoration: const InputDecoration(
+                          hintText: "Enter Task Title",
+                          labelText: "Task Title",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          )),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Task Title";
+                        }
+                      },
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: taskController.descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: "Enter Task Description",
+                        labelText: "Task Description",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: Get.height * 0.06,
+                            horizontal: Get.width * 0.03),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Task Description";
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             actions: [
@@ -154,12 +190,15 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                   ),
                   child: IconButton(
                       onPressed: () {
-                        taskController.addTask();
-                        Get.back();
-                        Get.snackbar("Added", "Task Added Successfully",
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: Colors.green,
-                            colorText: Colors.white);
+                        if (newFormKey.currentState!.validate()) {
+                          taskController.addTask();
+                          Get.back();
+                        } else {
+                          Get.snackbar("Error", "Please Fill All Fields",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
+                        }
                       },
                       icon: const Icon(Icons.add))),
             ],
@@ -336,7 +375,8 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                                     setState(() {
                                       taskController.updateTaskStatus(
                                           todoId, todoTitle, todoDescription);
-                                      taskController.dbHelper!.getTasks();
+                                      taskController.databaseController!
+                                          .getTasks();
                                       snapshot.data!
                                           .remove(snapshot.data![index]);
                                     });
