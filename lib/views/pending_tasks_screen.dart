@@ -16,7 +16,6 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
   final newFormKey = GlobalKey<FormState>();
   final updateFormKey = GlobalKey<FormState>();
 
-
   @override
   void initState() {
     super.initState();
@@ -100,14 +99,18 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                   ),
                   child: IconButton(
                       onPressed: () {
-                        if (updateFormKey.currentState!.validate()) {
-                          taskController.updateTask(taskId);
-                          Get.back();
-                        } else {
-                          Get.snackbar("Error", "Please Fill All Fields",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white);
+                        try {
+                          if (updateFormKey.currentState!.validate()) {
+                            taskController.updateTask(taskId);
+                            Get.back();
+                          } else {
+                            Get.snackbar("Error", "Please Fill All Fields",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white);
+                          }
+                        } on Exception catch (e) {
+                          debugPrint(e.toString());
                         }
                       },
                       icon: const Icon(Icons.add))),
@@ -190,14 +193,18 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                   ),
                   child: IconButton(
                       onPressed: () {
-                        if (newFormKey.currentState!.validate()) {
-                          taskController.addTask();
-                          Get.back();
-                        } else {
-                          Get.snackbar("Error", "Please Fill All Fields",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white);
+                        try {
+                          if (newFormKey.currentState!.validate()) {
+                            taskController.addTask();
+                            Get.back();
+                          } else {
+                            Get.snackbar("Error", "Please Fill All Fields",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white);
+                          }
+                        } on Exception catch (e) {
+                          debugPrint(e.toString());
                         }
                       },
                       icon: const Icon(Icons.add))),
