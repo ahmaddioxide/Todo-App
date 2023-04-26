@@ -15,7 +15,7 @@ class DatabaseController {
     return db!;
   }
 
-  initializeDatabase() async {
+  initializeDatabase() async { // TODO: Always define your function return types
     io_instance.Directory documentsDirectory =
         await getApplicationDocumentsDirectory();
     String path = '${documentsDirectory.path}todo.db';
@@ -23,7 +23,7 @@ class DatabaseController {
     return todoDatabase;
   }
 
-  createDb(Database todoDB, int version) async {
+  createDb(Database todoDB, int version) async { // TODO: Always define your function return types
     await todoDB.execute(
       "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, description TEXT, date TEXT NOT NULL, time TEXT NOT NULL, status INTEGER )",
     );
