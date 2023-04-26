@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:todo_app/views/pending_tasks_screen.dart';
+import 'package:flutter/material.dart';// UI toolkit
+import 'package:get/get.dart';//Package for state management
+import 'views/pending_tasks_screen.dart';// Project level import
 
-// TODO: Please follow this imports precedence in this whole project
+// * Please follow this imports precedence in this whole project
 
 /* ------ Imports precedence from high to low ------
 * ------- Followed at our Company Level ------------
-* 
+*
 * Language imports i.e. import 'dart:io';
 
 * Framework/UI toolkit imports i.e. import 'package:flutter/material.dart';

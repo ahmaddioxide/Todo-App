@@ -1,69 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/controllers/database_controller.dart';
-import 'package:todo_app/models/task.dart';
+import '../models/task.dart';
+import '../controllers/database_controller.dart';
 
 class TaskController {
-  // TODO: UI Cpde should not be used in the Bussiness logic and vice versa.
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
-  DatabaseController? databaseController;
-  late Future<List<Task>> tasks;
 
-  Future<List<Task>> getPendingTasks() {
-    var pendingTasks = databaseController!.getTasks(); // TODO: Avoid to use the var keyword whereever possible. Follow proper data types 
+  static final titleController = TextEditingController();
+  static final descriptionController = TextEditingController();
+  static final currentDatetime= DateTime.now();
+  static late Future<List<Task>> tasks;
+
+
+  static Future<List<Task>> getPendingTasks() {
+    Future<List<Task>> pendingTasks = DatabaseController.getTasks();
     pendingTasks.then((value) {
       value.removeWhere((element) => element.status == 1);
     });
-    return pendingTasks; // TODO: remove unnessary type casting.
+    return pendingTasks;
   }
 
-  Future<List<Task>> getDoneTasks() {
-    var doneTasks = databaseController!.getTasks();
+  static Future<List<Task>> getDoneTasks() {
+    Future<List<Task>> doneTasks = DatabaseController.getTasks();
     doneTasks.then((value) {
       value.removeWhere((element) => element.status == 0);
     });
-    return doneTasks;  // TODO: remove unnessary type casting.
+    return doneTasks;
   }
 
-  updateTaskStatus(taskId, todoTitle, todoDescription) {  // TODO: Always define your function return types
-    // TODO: Make it locallize or globalize If a constant value using again and gain i.e. DateTime.now() can be defined locally to this function
-   
-    var task = Task(
+  static void updateTaskStatus(taskId, todoTitle, todoDescription) {
+
+    Task task = Task(
       id: taskId,
       title: todoTitle.toString().trim(),
       description: todoDescription.toString().trim(),
       date:
-          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-      time: "${DateTime.now().hour}:${DateTime.now().minute}",
+          "${currentDatetime.day}/${currentDatetime.month}/${currentDatetime.year}",
+      time: "${currentDatetime.hour}:${currentDatetime.minute}",
       status: 1,
     );
-    databaseController!.update(task, taskId); // TODO: Use async await keywords to explain the language compiler about asynchronous operations
-    tasks = databaseController!.getTasks();
+    DatabaseController.update(task, taskId).then((value) =>tasks = DatabaseController.getTasks());
+
   }
 
-  addTask() {  // TODO: Always define your function return types 
-        // TODO: Make it locallize or globalize If a constant value using again and gain i.e. DateTime.now() can be defined locally to this function
-
-    var task = Task(
+  static Future<void> addTask() async {
+    Task task = Task(
       title: titleController.text,
       description: descriptionController.text,
       date:
-          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-      time: "${DateTime.now().hour}:${DateTime.now().minute}",
+          "${currentDatetime.day}/${currentDatetime.month}/${currentDatetime.year}",
+      time: "${currentDatetime.hour}:${currentDatetime.minute}",
       status: 0,
     );
 
-    databaseController!.insert(task);  // TODO: Use async await keywords to explain the language compiler about asynchronous operations
-    tasks = databaseController!.getTasks();
+   await DatabaseController.insert(task).then((value) =>  tasks = DatabaseController.getTasks());
     titleController.clear();
     descriptionController.clear();
-    // print("Task Added Successfully");
   }
 
-  updateTask(taskId) { // TODO: Always define your function return types
-        // TODO: Make it locallize or globalize If a constant value using again and gain i.e. DateTime.now() can be defined locally to this function
- 
-    var task = Task(
+  static void updateTask(taskId) {
+
+    Task task = Task(
       id: taskId,
       title: titleController.text.toString().trim(),
       description: descriptionController.text.toString().trim(),
@@ -73,10 +68,8 @@ class TaskController {
       status: 0,
     );
 
-    databaseController!.update(task, taskId);
-    tasks = databaseController!.getTasks();
+    DatabaseController.update(task, taskId).then((value) =>  tasks = DatabaseController.getTasks());
     titleController.clear();
-    descriptionController.clear();
     descriptionController.clear();
     // print("Task Updated Successfully");
   }

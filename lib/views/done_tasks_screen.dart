@@ -17,9 +17,9 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
   @override
   void initState() {
     super.initState();
-    taskController.databaseController = DatabaseController();
-    // taskController.tasks = taskController.dbHelper!.getTasks();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
                   color: Colors.purple,
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                )),
+                ),),
           ),
           ListTile(
             tileColor: Colors.purple[100],
@@ -52,7 +52,7 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
               ),
             ),
             onTap: () {
-              Get.offAll(() => (const PendingTasksScreen()));
+              Get.offAll(() => (const PendingTasksScreen()),);
             },
           ),
           SizedBox(
@@ -112,7 +112,7 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
               endIndent: 20,
             ),
             FutureBuilder(
-                future: taskController.getDoneTasks(),
+                future: TaskController.getDoneTasks(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(
@@ -197,9 +197,9 @@ class _DoneTasksScreenState extends State<DoneTasksScreen> {
                                   direction: DismissDirection.horizontal,
                                   onDismissed: (direction) {
                                     setState(() {
-                                      taskController.databaseController!
+                                      DatabaseController
                                           .delete(todoId);
-                                      taskController.getDoneTasks();
+                                      TaskController.getDoneTasks();
                                     });
                                   },
                                   child: Container(
