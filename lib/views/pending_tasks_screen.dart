@@ -12,16 +12,19 @@ class PendingTasksScreen extends StatefulWidget {
 }
 
 class _PendingTasksScreenState extends State<PendingTasksScreen> {
-  final taskController = TaskController();
+  //TODO: All Global variables and funcions must be private. So, that dart compiler can notify to you about unsed / dead code. 
+  final taskController = TaskController(); 
   final newFormKey = GlobalKey<FormState>();
   final updateFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    taskController.databaseController = DatabaseController();
+    taskController.databaseController = DatabaseController(); // TODO: The Database Controller instance should not be created from Tasks controller. There should be only one reason or source of truth to create a new instance. READ about "Single Responsibilitiy principal".
     taskController.tasks = taskController.databaseController!.getTasks();
   }
+
+  //TODO: custom functions should come after the bulid method.
 //This function is used to update the task data by showing alert dialogue and getting input into it.
   Future<void> updateTaskInput(context, taskId, title, description) async {
     taskController.titleController.text = title;
@@ -54,6 +57,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                     const SizedBox(
                       height: 10,
                     ),
+                    //TODO: If a widget is using more than once try to make it separate common useable component
                     TextFormField(
                       controller: taskController.descriptionController,
                       keyboardType: TextInputType.multiline,
@@ -537,7 +541,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                }),
+                }), // TODO: Always use trailing commas to veritically format your code
           ],
         ),
       ),

@@ -2,6 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/views/pending_tasks_screen.dart';
 
+// TODO: Please follow this imports precedence in this whole project
+
+/* ------ Imports precedence from high to low ------
+* ------- Followed at our Company Level ------------
+* 
+* Language imports i.e. import 'dart:io';
+
+* Framework/UI toolkit imports i.e. import 'package:flutter/material.dart';
+
+* External Library/Package imports i.e. ';import 'package:get/get.dart';
+
+* Project level imports i.e. import 'package:todo_app/views/pending_tasks_screen.dart';
+
+* Project level sub imports i.e. import 'views/pending_tasks_screen.dart';
+
+* For more info: https://dart.dev/language/libraries#using-libraries
+*/
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
