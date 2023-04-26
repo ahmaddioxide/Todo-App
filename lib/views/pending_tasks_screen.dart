@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';// UI toolkit
-import 'package:get/get.dart';//Package for state management
+import 'package:flutter/material.dart'; // UI toolkit
+import 'package:get/get.dart'; //Package for state management
 import '../controllers/task_controller.dart';
-import '../controllers/database_controller.dart';// Project level import
-import 'done_tasks_screen.dart';// Project level import
+import '../controllers/database_controller.dart'; // Project level import
+import 'done_tasks_screen.dart'; // Project level import
 
 class PendingTasksScreen extends StatefulWidget {
   const PendingTasksScreen({super.key});
@@ -13,19 +13,19 @@ class PendingTasksScreen extends StatefulWidget {
 
 class _PendingTasksScreenState extends State<PendingTasksScreen> {
   static final _newFormKey = GlobalKey<FormState>();
-  static final _updateFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     TaskController.tasks = DatabaseController.getTasks();
   }
+
   @override
-  void dispose() {
-    super.dispose();
-    TaskController.titleController.dispose();
-    TaskController.descriptionController.dispose();
-  }
+  // void dispose() {
+  //   super.dispose();
+  //   TaskController.titleController.dispose();
+  //   TaskController.descriptionController.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -194,8 +194,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                                   setState(() {
                                     TaskController.updateTaskStatus(
                                         todoId, todoTitle, todoDescription);
-                                    DatabaseController
-                                        .getTasks();
+                                    DatabaseController.getTasks();
                                     snapshot.data!
                                         .remove(snapshot.data![index]);
                                   });
@@ -353,7 +352,6 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
     // ignore: empty_statements
   }
 
-
 //This function is used to update the task data by showing alert dialogue and getting input into it.
   Future<void> updateTaskInput(context, taskId, title, description) async {
     TaskController.titleController.text = title;
@@ -388,7 +386,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
                   child: IconButton(
                       onPressed: () {
                         try {
-                          if (_updateFormKey.currentState!.validate()) {
+                          if (_newFormKey.currentState!.validate()) {
                             TaskController.updateTask(taskId);
                             Get.back();
                           } else {
@@ -460,7 +458,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
     });
   }
 
-  Form taskInputForm(){
+  Form taskInputForm() {
     return Form(
       key: _newFormKey,
       child: Column(
@@ -491,8 +489,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
               hintText: "Enter Task Description",
               labelText: "Task Description",
               contentPadding: EdgeInsets.symmetric(
-                  vertical: Get.height * 0.06,
-                  horizontal: Get.width * 0.03),
+                  vertical: Get.height * 0.06, horizontal: Get.width * 0.03),
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
