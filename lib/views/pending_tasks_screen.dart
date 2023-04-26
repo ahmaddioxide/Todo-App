@@ -22,7 +22,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
     taskController.databaseController = DatabaseController();
     taskController.tasks = taskController.databaseController!.getTasks();
   }
-
+//This function is used to update the task data by showing alert dialogue and getting input into it.
   Future<void> updateTaskInput(context, taskId, title, description) async {
     taskController.titleController.text = title;
     taskController.descriptionController.text = description;
@@ -121,6 +121,7 @@ class _PendingTasksScreenState extends State<PendingTasksScreen> {
     });
   }
 
+  //This function is used to add new task by showing alert dialogue and getting input into it.
   Future<void> newTaskInput(context) async {
     return showDialog(
         barrierColor: Colors.black.withOpacity(0.5),
