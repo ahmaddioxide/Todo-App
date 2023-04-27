@@ -3,12 +3,10 @@ import '../models/task.dart';
 import '../controllers/database_controller.dart';
 
 class TaskController {
-
   static final titleController = TextEditingController();
   static final descriptionController = TextEditingController();
-  static final currentDatetime= DateTime.now();
+  static final _currentDateTime = DateTime.now();
   static late Future<List<Task>> tasks;
-
 
   static Future<List<Task>> getPendingTasks() {
     Future<List<Task>> pendingTasks = DatabaseController.getTasks();
@@ -27,18 +25,17 @@ class TaskController {
   }
 
   static void updateTaskStatus(taskId, todoTitle, todoDescription) {
-
     Task task = Task(
       id: taskId,
       title: todoTitle.toString().trim(),
       description: todoDescription.toString().trim(),
       date:
-          "${currentDatetime.day}/${currentDatetime.month}/${currentDatetime.year}",
-      time: "${currentDatetime.hour}:${currentDatetime.minute}",
+          "${_currentDateTime.day}/${_currentDateTime.month}/${_currentDateTime.year}",
+      time: "${_currentDateTime.hour}:${_currentDateTime.minute}",
       status: 1,
     );
-    DatabaseController.update(task, taskId).then((value) =>tasks = DatabaseController.getTasks());
-
+    DatabaseController.update(task, taskId)
+        .then((value) => tasks = DatabaseController.getTasks());
   }
 
   static Future<void> addTask() async {
@@ -46,18 +43,18 @@ class TaskController {
       title: titleController.text,
       description: descriptionController.text,
       date:
-          "${currentDatetime.day}/${currentDatetime.month}/${currentDatetime.year}",
-      time: "${currentDatetime.hour}:${currentDatetime.minute}",
+          "${_currentDateTime.day}/${_currentDateTime.month}/${_currentDateTime.year}",
+      time: "${_currentDateTime.hour}:${_currentDateTime.minute}",
       status: 0,
     );
 
-   await DatabaseController.insert(task).then((value) =>  tasks = DatabaseController.getTasks());
+    await DatabaseController.insert(task)
+        .then((value) => tasks = DatabaseController.getTasks());
     titleController.clear();
     descriptionController.clear();
   }
 
   static void updateTask(taskId) {
-
     Task task = Task(
       id: taskId,
       title: titleController.text.toString().trim(),
@@ -68,7 +65,8 @@ class TaskController {
       status: 0,
     );
 
-    DatabaseController.update(task, taskId).then((value) =>  tasks = DatabaseController.getTasks());
+    DatabaseController.update(task, taskId)
+        .then((value) => tasks = DatabaseController.getTasks());
     titleController.clear();
     descriptionController.clear();
     // print("Task Updated Successfully");
